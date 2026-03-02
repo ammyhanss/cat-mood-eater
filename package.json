@@ -1,0 +1,15 @@
+{
+  "name": "cat-mood-eater",
+  "version": "1.0.0",
+  "description": "橘貓情緒垃圾桶 — macOS 桌面掛件",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0"
+  }
+}

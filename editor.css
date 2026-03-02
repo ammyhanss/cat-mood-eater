@@ -1,0 +1,232 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 460px;
+    height: 380px;
+    background: #1a1008;
+    font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', sans-serif;
+    overflow: hidden;
+    color: #f5e6d0;
+}
+
+#editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 20px 16px;
+}
+
+/* ---- Header ---- */
+#editor-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 160, 50, 0.2);
+}
+
+#header-cat {
+    font-size: 36px;
+    line-height: 1;
+    animation: headBob 2s ease-in-out infinite;
+}
+
+@keyframes headBob {
+
+    0%,
+    100% {
+        transform: rotate(-5deg);
+    }
+
+    50% {
+        transform: rotate(5deg);
+    }
+}
+
+#header-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffcc77;
+    letter-spacing: 0.02em;
+}
+
+#header-sub {
+    font-size: 12px;
+    color: rgba(245, 230, 208, 0.5);
+    margin-top: 2px;
+}
+
+/* ---- Textarea ---- */
+#textarea-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+#mood-input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    color: #f5e6d0;
+    font-size: 15px;
+    font-family: inherit;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+}
+
+#mood-input::placeholder {
+    color: rgba(245, 230, 208, 0.3);
+    font-size: 14px;
+}
+
+/* ---- Footer ---- */
+#editor-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 160, 50, 0.15);
+}
+
+/* Char counter */
+#char-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#char-bar-track {
+    width: 60px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#char-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: #ff9933;
+    border-radius: 4px;
+    transition: width 0.2s ease, background 0.3s ease;
+}
+
+#char-count {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ff9933;
+    min-width: 22px;
+    text-align: right;
+}
+
+#char-max {
+    font-size: 13px;
+    color: rgba(245, 230, 208, 0.35);
+}
+
+/* Throw button */
+#throw-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #ff9933, #e06a00);
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 12px rgba(255, 120, 0, 0.4);
+}
+
+#throw-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 18px rgba(255, 120, 0, 0.55);
+}
+
+#throw-btn:not(:disabled):active {
+    transform: translateY(0px) scale(0.97);
+}
+
+#throw-btn:disabled {
+    background: rgba(255, 153, 51, 0.25);
+    color: rgba(255, 255, 255, 0.35);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#throw-icon {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+#throw-btn:not(:disabled):hover #throw-icon {
+    transform: rotate(-20deg) scale(1.2);
+}
+
+/* ---- Paper ball throw overlay ---- */
+#throw-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    display: none;
+}
+
+#throw-overlay.active {
+    display: block;
+}
+
+#animated-ball {
+    position: absolute;
+    font-size: 32px;
+    bottom: 60px;
+    right: 100px;
+    opacity: 0;
+}
+
+#animated-ball.throw {
+    animation: ballThrow 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes ballThrow {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(-60px, -120px) scale(0.85) rotate(270deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-120px, -60px) scale(0.2) rotate(540deg);
+        opacity: 0;
+    }
+}
+
+#cat-face-target {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    font-size: 36px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#throw-overlay.active #cat-face-target {
+    opacity: 1;
+}

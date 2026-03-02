@@ -1,0 +1,244 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 230px;
+  height: 270px;
+  /* 完全透明 — 毛玻璃效果由 macOS vibrancy 系統層渲染，不需要 CSS 模擬 */
+  background: transparent;
+  overflow: hidden;
+  border-radius: 20px;
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+#cat-container {
+  position: relative;
+  width: 230px;
+  height: 270px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: transparent;
+  /* 幾乎無底板：只留非常微弱的輪廓 */
+  box-shadow:
+    inset 0 0 0 0.45px rgba(255, 255, 255, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+#drag-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  /* 透明視窗需要極淡像素才能穩定拖曳；此值肉眼幾乎不可見 */
+  background: rgba(255, 255, 255, 0.014);
+  z-index: 1;
+  -webkit-app-region: drag;
+}
+
+#cat-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  /* 只保留一層極輕微高光，避免整塊底板感 */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.015) 35%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* ---- Cat images ---- */
+.cat-img {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 210px;
+  height: auto;
+  display: none;
+  z-index: 3;
+  -webkit-app-region: no-drag;
+}
+
+.cat-img.active {
+  display: block;
+}
+
+/* Sitting: gentle float animation */
+#cat-sit.active {
+  animation: float 3.5s ease-in-out infinite;
+}
+
+/* Lazy: subtle breathe animation */
+#cat-lazy.active {
+  animation: breathe 4s ease-in-out infinite;
+  bottom: 10px;
+}
+
+/* Eating: excited bounce */
+#cat-eat.active {
+  animation: eatBounce 0.4s ease-out;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-8px);
+  }
+}
+
+@keyframes breathe {
+
+  0%,
+  100% {
+    transform: translateX(-50%) scaleY(1);
+  }
+
+  50% {
+    transform: translateX(-50%) scaleY(0.96);
+  }
+}
+
+@keyframes eatBounce {
+  0% {
+    transform: translateX(-50%) scale(1);
+  }
+
+  30% {
+    transform: translateX(-50%) scale(1.12) translateY(-6px);
+  }
+
+  60% {
+    transform: translateX(-50%) scale(0.97);
+  }
+
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* ---- Clickable head zone ---- */
+#cat-head {
+  position: absolute;
+  /* Container = 260px tall; cat image = ~200px tall, bottom-aligned → starts at y=60.
+     Cat head center ≈ top 22% of image → 60 + 200*0.22 = ~104px.
+     Making zone slightly larger to be forgiving. Debug: set background to rgba(255,0,0,0.3) */
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  /* CRITICAL: Electron ignores clicks on fully-transparent pixels in transparent windows */
+  background: rgba(0, 0, 0, 0.01);
+  cursor: pointer;
+  z-index: 20;
+  -webkit-app-region: no-drag;
+}
+
+#cat-head:hover+.cat-img,
+#cat-head:hover~#cat-sit {
+  filter: brightness(1.08);
+}
+
+/* ---- Paper ball ---- */
+#paper-ball {
+  position: absolute;
+  font-size: 28px;
+  display: none;
+  z-index: 20;
+  pointer-events: none;
+}
+
+@keyframes throwBall {
+  0% {
+    opacity: 1;
+    transform: translate(120px, -20px) scale(1) rotate(0deg);
+  }
+
+  40% {
+    transform: translate(60px, -80px) scale(0.9) rotate(180deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(5px, 60px) scale(0.3) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+#paper-ball.throwing {
+  display: block;
+  animation: throwBall 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ---- Nom bubble ---- */
+#nom-bubble {
+  position: absolute;
+  top: 40px;
+  right: 8px;
+  background: rgba(255, 160, 50, 0.92);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: -apple-system, 'PingFang TC', sans-serif;
+  padding: 5px 10px;
+  border-radius: 16px;
+  opacity: 0;
+  transform: translateY(0) scale(0.8);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+#nom-bubble.show {
+  opacity: 1;
+  transform: translateY(-10px) scale(1);
+}
+
+/* ---- Count badge ---- */
+#count-badge {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(28, 34, 45, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: rgba(240, 245, 255, 0.88);
+  font-size: 11px;
+  font-family: -apple-system, 'PingFang TC', sans-serif;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border: 1px solid rgba(188, 210, 245, 0.22);
+  z-index: 20;
+  -webkit-app-region: no-drag;
+}
+
+#count-badge.visible {
+  opacity: 1;
+}
+
+#count-num {
+  color: #acd0ff;
+  font-weight: 700;
+}

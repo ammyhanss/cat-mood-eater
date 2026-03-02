@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>說說你的心情...</title>
+    <link rel="stylesheet" href="editor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="editor-container">
+        <!-- Header -->
+        <div id="editor-header">
+            <div id="header-cat">🐱</div>
+            <div id="header-text">
+                <div id="header-title">說說你的心情...</div>
+                <div id="header-sub">寫下來，讓橘貓吃掉它 🍊</div>
+            </div>
+        </div>
+
+        <!-- Textarea -->
+        <div id="textarea-wrapper">
+            <textarea id="mood-input" placeholder="今天發生了什麼事？心情不好沒關係，盡情說出來，讓橘貓替你消化掉～" maxlength="500"
+                autofocus></textarea>
+        </div>
+
+        <!-- Footer: char count + submit -->
+        <div id="editor-footer">
+            <div id="char-info">
+                <div id="char-bar-track">
+                    <div id="char-bar-fill"></div>
+                </div>
+                <span id="char-count">0</span>
+                <span id="char-max">/500</span>
+            </div>
+            <button id="throw-btn" disabled>
+                <span id="throw-icon">🗒️</span>
+                <span>丟出去！</span>
+            </button>
+        </div>
+
+        <!-- Paper ball throw animation overlay -->
+        <div id="throw-overlay">
+            <div id="animated-ball">🗒️</div>
+            <div id="cat-face-target">😸</div>
+        </div>
+    </div>
+
+    <script src="editor.js"></script>
+</body>
+
+</html>

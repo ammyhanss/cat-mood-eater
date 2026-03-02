@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>橘貓情緒垃圾桶</title>
+  <link rel="stylesheet" href="widget.css">
+</head>
+<body>
+  <div id="cat-container">
+    <div id="drag-layer" aria-hidden="true"></div>
+    <!-- Sitting pose (default) -->
+    <img id="cat-sit" class="cat-img active" src="assets/cat_sit.png" alt="貓咪坐姿">
+    <!-- Lazy pose (random switch) -->
+    <img id="cat-lazy" class="cat-img" src="assets/cat_lazy.png" alt="貓咪躺姿">
+    <!-- Eating pose (triggered on feed) -->
+    <img id="cat-eat" class="cat-img" src="assets/cat_eat.png" alt="貓咪吃東西">
+
+    <!-- Clickable head overlay -->
+    <div id="cat-head" title="點我說說心情～"></div>
+
+    <!-- Paper ball animation element -->
+    <div id="paper-ball">🗒️</div>
+
+    <!-- Nom nom bubble -->
+    <div id="nom-bubble">吧唧！ 😋</div>
+
+    <!-- Daily count badge -->
+    <div id="count-badge">
+      <span id="count-emoji">🐾</span>
+      <span id="count-text">今天吃了 <strong id="count-num">0</strong> 條</span>
+    </div>
+  </div>
+
+  <script src="widget.js"></script>
+</body>
+</html>
